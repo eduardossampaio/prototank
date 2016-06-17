@@ -1,6 +1,6 @@
 package com.esampaio.prototank.raspberry.comunication.internet;
 
-import com.esampaio.prototank.raspberry.comunication.CommunicationException;
+import com.esampaio.prototank.raspberry.comunication.exceptions.CommunicationException;
 
 public abstract class Server {
 	

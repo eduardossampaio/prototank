@@ -19,4 +19,6 @@ public interface ProtocolConstants {
 
 	byte RESULT_OK 			= (byte) 0xB1;
 	byte RESULT_ERROR 		= (byte) 0xB2;
+	
+	byte END_PACKAGE		= (byte) 0xF0;
 }

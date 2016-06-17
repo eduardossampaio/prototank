@@ -1,4 +1,4 @@
-package com.esampaio.prototank.raspberry.comunication;
+package com.esampaio.prototank.raspberry.comunication.exceptions;
 /**
  * 
  * @author eduardo
@@ -19,5 +19,12 @@ public class CommunicationException extends Exception{
 		super(exception);
 	}
 	
+	public CommunicationException(String message){
+		super(message);
+	}
+	public CommunicationException(String message,Throwable exception) {
+		super(message,exception);
+		
+	}
 
 }

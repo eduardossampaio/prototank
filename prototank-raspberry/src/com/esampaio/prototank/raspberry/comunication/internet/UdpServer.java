@@ -8,7 +8,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import com.esampaio.prototank.raspberry.comunication.CommunicationException;
+import com.esampaio.prototank.raspberry.comunication.exceptions.CommunicationException;
 
 public class UdpServer extends Server{
 	private int port;
