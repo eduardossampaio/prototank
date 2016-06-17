@@ -4,6 +4,6 @@ import com.esampaio.prototank.raspberry.comunication.internet.InternetCommunicat
 
 public class CommunicationFactory {
 	public Communication build(){
-		return new InternetCommunication();
+		return new InternetCommunication(1,2);
 	}
 }	

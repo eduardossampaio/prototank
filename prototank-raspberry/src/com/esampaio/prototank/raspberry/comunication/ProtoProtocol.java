@@ -1,41 +1,85 @@
 package com.esampaio.prototank.raspberry.comunication;
 
+import java.util.Arrays;
+
+import com.esampaio.prototank.raspberry.action.command.CommandType;
 import com.esampaio.prototank.raspberry.action.command.Command;
-import com.esampaio.prototank.raspberry.action.request.Request;
+import com.esampaio.prototank.raspberry.action.command.Action;
 
 public class ProtoProtocol {
-	public static final byte COMMAND = (byte) 0xCC;
-	public static final byte REQUEST = (byte) 0xAA;
-	public static final byte RESULT  = (byte) 0xBB;
 	
-	public static final byte MOVE_FORWARD 		= (byte) 0xC1;
-	public static final byte MOVE_BACKWARD 		= (byte) 0xC2;
-	public static final byte MOVE_RIGHT 		= (byte) 0xC3;
-	public static final byte MOVE_LEFT 			= (byte) 0xC4;
-	public static final byte LEDS_ON 			= (byte) 0xC5;
-	public static final byte LEDS_OFF 			= (byte) 0xC6;
-	
-	public static final byte REQUEST_CAMERA		= (byte) 0xA1;
-	public static final byte REQUEST_WIFI		= (byte) 0xA2;
-	public static final byte REQUEST_BATTERY	= (byte) 0xA3;
+	private class Package{
+		private byte requestType;		
+		private int requestId;		
+		private byte requestByte;		
+		private int requestDataLen;		
+		private byte[] requestData;		
+		private byte endRequestByte;
 		
-	public static final byte RESULT_OK			= (byte) 0xB1;
-	public static final byte RESULT_ERROR		= (byte) 0xB2;
-	
+		public Package() {
+		}
+		
+		@Override
+		public String toString() {
+			 String arr = "";
+			 arr = arr + "action byte: "+String.format("%02X", requestType)+"\n";
+			 arr = arr + "request id :" +requestId+"\n";
+			 arr = arr + "request byte: "+String.format("%02X", requestByte)+"\n";
+			 arr = arr + "request data len:" +requestDataLen+"\n";
+			 arr = arr + "end requestByte byte: "+String.format("%02X", endRequestByte)+"\n";			 
+			 return arr;
+		}
+		
+	}
 		
 	public byte[] encodeCommand(Command command){
 		return null;
 	}
 	public Command decodeCommand(byte [] command){
-		return null;
+		Package package_ = build(command);
+		CommandType type = CommandType.getCommandType(package_.requestType);
+		int commandId = package_.requestId;
+		Action action = Action.getAction(package_.requestByte);
+		byte [] requestData = package_.requestData;
+		Command command2 = new Command(type, commandId, action, requestData);
+		return command2;
+	}
+		
+	
+	public Package build(byte [] bytes){
+		
+		try{
+			Package packageToBuild = new Package();
+			packageToBuild.requestType = bytes[0];
+			
+			packageToBuild.requestId = ((bytes[1] & 0xFF) << 8) | (bytes[2] & 0xFF);
+			
+			packageToBuild.requestByte = bytes[3];
+			
+			packageToBuild.requestDataLen = ((bytes[4] & 0xFF) << 8) | (bytes[5] & 0xFF);
+			
+			if (packageToBuild.requestDataLen != 0){
+				packageToBuild.requestData =Arrays.copyOfRange(bytes, 6, 6+packageToBuild.requestDataLen);
+				
+			}
+			packageToBuild.endRequestByte = bytes[bytes.length-1];								
+			return packageToBuild;			
+		}catch(Exception e){
+			e.printStackTrace();
+			throw e;
+		}
+		
+		
 	}
 	
-	public byte[] encondeRequest(Request request){
-		return null;
+	public static void main(String[] args) {
+		byte[] bytes = {(byte) 0xAA, 0x00,(byte) 0x01,(byte) 0xAF,0x00,0x03,(byte) 0xAA,(byte) 0xBB,(byte) 0xCC,(byte) 0xF0};
+		Package package1 = new ProtoProtocol().build(bytes);
+		System.out.println(package1);
 	}
 	
-	public Request decodeRequest(byte [] request){
-		return null;
-	}
+	
 	
 }
+
+

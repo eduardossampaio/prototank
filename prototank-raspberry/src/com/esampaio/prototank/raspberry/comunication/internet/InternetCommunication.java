@@ -1,9 +1,8 @@
 package com.esampaio.prototank.raspberry.comunication.internet;
 
+
 import com.esampaio.prototank.raspberry.action.command.Command;
 import com.esampaio.prototank.raspberry.action.command.CommandResult;
-import com.esampaio.prototank.raspberry.action.request.Request;
-import com.esampaio.prototank.raspberry.action.request.RequestResult;
 import com.esampaio.prototank.raspberry.comunication.Communication;
 import com.esampaio.prototank.raspberry.comunication.CommunicationException;
 import com.esampaio.prototank.raspberry.comunication.ProtoProtocol;
@@ -16,8 +15,9 @@ public class InternetCommunication implements Communication{
 	
 	ProtoProtocol protocol = new ProtoProtocol();
 	
-	public InternetCommunication() {
-		
+	public InternetCommunication(int tcpPort,int udpPort) {
+		tcpServer = new TcpServer(tcpPort);
+		udpServer = new UdpServer(udpPort);		
 	}
 	
 	@Override
@@ -68,20 +68,7 @@ public class InternetCommunication implements Communication{
 
 	@Override
 	public void resultCommand(CommandResult commandResult) {
-		// TODO Auto-generated method stub
-		
+		protocol.encodeCommand(commandResult.getCommand());
 	}
-
-	@Override
-	public Request receiveRequest() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void resultRequest(RequestResult requestResult) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

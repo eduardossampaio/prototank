@@ -1,9 +1,31 @@
 package com.esampaio.prototank.raspberry.action.command;
 
 public class Command {
+	private CommandType type;
+	private int commandId;
 	private Action action;
 	private byte[] data;
 	
+	
+	public Command(CommandType type, int commandId, Action action, byte[] data) {
+		this.type = type;
+		this.commandId = commandId;
+		this.action = action;
+		this.data = data;
+	}
+	
+	public CommandType getType() {
+		return type;
+	}
+	public void setType(CommandType type) {
+		this.type = type;
+	}
+	public int getCommandId() {
+		return commandId;
+	}
+	public void setCommandId(int commandId) {
+		this.commandId = commandId;
+	}
 	public Action getAction() {
 		return action;
 	}
@@ -16,6 +38,7 @@ public class Command {
 	public void setData(byte[] data) {
 		this.data = data;
 	}
+	
 	
 	
 }
