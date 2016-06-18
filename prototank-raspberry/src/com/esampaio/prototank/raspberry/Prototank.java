@@ -7,12 +7,14 @@ import com.esampaio.prototank.raspberry.comunication.exceptions.ClientDisconnect
 import com.esampaio.prototank.raspberry.comunication.exceptions.CommunicationException;
 import com.esampaio.prototank.raspberry.hardware.components.Led;
 import com.esampaio.prototank.raspberry.hardware.components.Motor;
+import com.pi4j.io.gpio.GpioPin;
+import com.pi4j.io.gpio.RaspiPin;
 
 public class Prototank {
 	private Communication communication = CommunicationFactory.build();
-	private Motor leftMotor = new Motor();
-	private Motor rightMotor = new Motor();
-	private Led leds = new Led();
+	private Motor leftMotor = new Motor(RaspiPin.GPIO_00,RaspiPin.GPIO_01);
+	private Motor rightMotor = new Motor(RaspiPin.GPIO_02,RaspiPin.GPIO_03);
+	private Led leds = new Led(RaspiPin.GPIO_04);
 	
 	
 	private boolean finallize;	
@@ -70,6 +72,14 @@ public class Prototank {
 		case TURN_RIGHT:
 			moveRight();
 			break;
+		case LEDS_ON:
+			System.out.println("leds on");
+			leds.on();
+			break;
+		case LEDS_OFF:
+			System.out.println("leds off");
+			leds.off();
+			break;
 		default:
 			break;
 		}
@@ -80,15 +90,23 @@ public class Prototank {
 	
 	private void moveForward(){
 		System.out.println("moving forward");
+		leftMotor.moveForward();
+		rightMotor.moveForward();
 	}
 	private void moveBackward(){
 		System.out.println("moving backward");
+		leftMotor.moveBackward();
+		rightMotor.moveBackward();
 	}
 	private void moveLeft(){
 		System.out.println("moving left");
+		leftMotor.moveForward();		
+		rightMotor.moveBackward();
 	}
 	private void moveRight(){
 		System.out.println("moving right");
+		leftMotor.moveBackward();
+		rightMotor.moveForward();
 	}
 }
 
