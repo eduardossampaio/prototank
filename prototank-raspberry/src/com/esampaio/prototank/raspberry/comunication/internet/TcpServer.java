@@ -61,6 +61,7 @@ public class TcpServer extends Server{
 			int len = this.clientInputStream.read(buffer);
 			if ( len < 0){
 				this.isConnected = false;
+				throw new ClientDisconnectedException("Client disconnected");
 				
 			}
 			outputStream.write(buffer, 0, len);

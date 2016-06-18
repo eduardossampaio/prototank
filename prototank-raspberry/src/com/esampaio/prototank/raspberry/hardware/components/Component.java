@@ -1,7 +1,6 @@
 package com.esampaio.prototank.raspberry.hardware.components;
 
 import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
@@ -13,7 +12,7 @@ import com.pi4j.io.gpio.PinState;
  *
  */
 public abstract class Component {
-	protected GpioController factory = GpioFactory.getInstance();
+	protected GpioController factory;// = GpioFactory.getInstance();
 	
 	protected GpioPinDigitalOutput setupOutPin(Pin  pin){
 		return setupOutPin(pin, pin.toString(), PinState.LOW);
@@ -24,9 +23,9 @@ public abstract class Component {
 	}
 	
 	protected GpioPinDigitalOutput setupOutPin(Pin  pin,String name,PinState state){		
-		//GpioPinDigitalOutput digitalPin = factory.provisionDigitalOutputPin(pin, name,state);
-		//digitalPin.setShutdownOptions(true, PinState.LOW);		
-		//return digitalPin;
-		return null;
+		GpioPinDigitalOutput digitalPin = factory.provisionDigitalOutputPin(pin, name,state);
+		digitalPin.setShutdownOptions(true, PinState.LOW);		
+		return digitalPin;
+		//return null;
 	}
 }

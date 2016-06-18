@@ -1,13 +1,14 @@
 package com.esampaio.prototank.raspberry;
 
+import com.esampaio.prototank.raspberry.action.ResultStatus;
 import com.esampaio.prototank.raspberry.action.command.Command;
+import com.esampaio.prototank.raspberry.action.command.CommandResult;
 import com.esampaio.prototank.raspberry.comunication.Communication;
 import com.esampaio.prototank.raspberry.comunication.CommunicationFactory;
 import com.esampaio.prototank.raspberry.comunication.exceptions.ClientDisconnectedException;
 import com.esampaio.prototank.raspberry.comunication.exceptions.CommunicationException;
 import com.esampaio.prototank.raspberry.hardware.components.Led;
 import com.esampaio.prototank.raspberry.hardware.components.Motor;
-import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.RaspiPin;
 
 public class Prototank {
@@ -43,10 +44,10 @@ public class Prototank {
 	
 	
 	private void handleAction() throws CommunicationException{
-		Command command;
-		
+		Command command = null;		
+		try{
 			command = communication.receiveCommand();
-		
+				
 			switch (command.getType()) {
 			case COMMAND:
 				handleCommand(command);
@@ -56,9 +57,15 @@ public class Prototank {
 				break;
 			default:
 				break;
-			}		
+			}
+		}catch(Exception e){
+			if ( command!=null){
+				this.communication.resultCommand(new CommandResult(command, ResultStatus.ERROR));
+			}
+			throw e;
+		}
 	}
-	private void handleCommand(Command command){
+	private void handleCommand(Command command) throws CommunicationException{
 		switch (command.getAction()) {
 		case MOVE_FORWARD:
 			moveForward();
@@ -83,6 +90,8 @@ public class Prototank {
 		default:
 			break;
 		}
+		CommandResult commandResult = new CommandResult(command, ResultStatus.OK);
+		this.communication.resultCommand(commandResult);
 	}
 	private void handleRequest(Command command){
 		

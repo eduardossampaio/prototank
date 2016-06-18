@@ -69,7 +69,19 @@ public class InternetCommunication implements Communication{
 
 	@Override
 	public void resultCommand(CommandResult commandResult) {
-		//protocol.encodeCommand(commandResult.getCommand());
+		new Thread(new Runnable() {			
+			@Override
+			public void run() {
+				
+				try {
+					byte [] encodedResult = protocol.encodeResult(commandResult);	
+					tcpServer.write(encodedResult);
+				} catch (CommunicationException e) {
+					e.printStackTrace();
+				}
+			}
+		}).run();
+		
 	}
 	
 }

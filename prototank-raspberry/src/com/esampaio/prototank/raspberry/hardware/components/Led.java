@@ -13,7 +13,7 @@ public class Led extends Component{
 	private GpioPinDigitalOutput  gpioPin;
 	
 	public Led(Pin pin) {		
-		gpioPin = setupOutPin(pin);
+		//gpioPin = setupOutPin(pin);
 	}
 	
 	
@@ -21,12 +21,12 @@ public class Led extends Component{
 	 * turns the led on
 	 */
 	public void on(){
-		gpioPin.high();
+		//gpioPin.high();
 	}
 	/**
 	 * turns the led off
 	 */
 	public void off(){
-		gpioPin.low();
+		//gpioPin.low();
 	}
 }

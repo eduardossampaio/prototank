@@ -12,6 +12,9 @@ public class Command {
 		this.commandId = commandId;
 		this.action = action;
 		this.data = data;
+		if( this.data == null){
+			this.data = new byte[0];
+		}
 	}
 	
 	public CommandType getType() {

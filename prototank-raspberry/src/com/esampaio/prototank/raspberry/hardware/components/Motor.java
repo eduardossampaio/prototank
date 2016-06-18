@@ -14,8 +14,8 @@ public class Motor extends Component {
 	private GpioPinDigitalOutput  gpioPin2;
 	
 	public Motor(Pin pin1,Pin pin2) {		
-		gpioPin1 = setupOutPin(pin1);
-		gpioPin2 = setupOutPin(pin2);
+//		gpioPin1 = setupOutPin(pin1);
+//		gpioPin2 = setupOutPin(pin2);
 	}
 	
 	
@@ -25,18 +25,18 @@ public class Motor extends Component {
 	 * max speed
 	 */	
 	public void moveForward(){
-		gpioPin1.high();
-		gpioPin2.low();
+//		gpioPin1.high();
+//		gpioPin2.low();
 	}
 
 	public void moveBackward(){
-		gpioPin1.low();
-		gpioPin2.high();		
+//		gpioPin1.low();
+//		gpioPin2.high();		
 	}
 	
 	public void stop(){
-		gpioPin1.low();
-		gpioPin2.low();
+//		gpioPin1.low();
+//		gpioPin2.low();
 	}
 
 		
